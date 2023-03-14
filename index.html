@@ -64,44 +64,38 @@
       <form>
         <label for="quote-text">Teks Kutipan:</label>
         <input type="text" id="quote-text" required>
-        <label for="quote-style">Gaya Kutipan:</label>
-        <select id="quote-style">
-          <option value="1">Gaya 1</option>
-          <option value="2">Gaya 2</option>
-          <option value="3">Gaya 3</option>
-        </select>
         <button id="generate-button">Buat Kutipan</button>
       </form>
       <div id="quote-container">
-        <img id="quote-image" alt="Kutipan">
+        <p id="quote-text-display"></p>
         <a id="download-link" href="#" download="kutipan.png">Unduh Kutipan</a>
       </div>
     </div>
     <script>
       const generateButton = document.querySelector('#generate-button');
       const quoteContainer = document.querySelector('#quote-container');
-      const quoteImage = document.querySelector('#quote-image');
+      const quoteTextDisplay = document.querySelector('#quote-text-display');
       const downloadLink = document.querySelector('#download-link');
-      // Fungsi untuk mengubah teks kutipan menjadi gambar
+
+      // Fungsi untuk menghasilkan teks kutipan pada latar belakang putih
       function generateQuote() {
         const quoteText = document.querySelector('#quote-text').value;
-        const quoteStyle = document.querySelector('#quote-style').value;
-		// Membuat URL untuk API yang digunakan untuk mengubah teks menjadi gambar
-    const apiUrl = `https://api.quotable.io/quotes?font=arial&fontSize=40&width=800&height=600&border=5&quote=${quoteText}`;
+        quoteTextDisplay.textContent = quoteText;
+        quoteContainer.style.display = 'block';
+        downloadLink.style.display = 'block';
+      }
 
-    // Menampilkan gambar kutipan di halaman
-    quoteImage.src = apiUrl;
-    quoteContainer.style.display = 'block';
-    downloadLink.style.display = 'block';
-
-    // Mengubah nama file yang diunduh menjadi teks kutipan yang diinputkan
-    downloadLink.download = `${quoteText}.png`;
-  }
-
-  // Menambahkan event listener pada button untuk memanggil fungsi generateQuote() ketika tombol tersebut diklik:
-
-generateButton.addEventListener('click', generateQuote);
-
-  </script>
+      // Fungsi untuk mengatur nama file yang akan diunduh
+      function setDownloadFileName() {
+        const quoteText = document.querySelector('#quote-text').value;
+const fileName = kutipan_${quoteText.replace(/\s/g, '_').toLowerCase()}.png;
+downloadLink.setAttribute('download', fileName);
+}
+  // Event listener ketika tombol "Buat Kutipan" diklik
+  generateButton.addEventListener('click', () => {
+    generateQuote();
+    setDownloadFileName();
+  });
+</script>
   </body>
 </html>
